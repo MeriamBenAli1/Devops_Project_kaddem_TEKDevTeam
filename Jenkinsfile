@@ -12,22 +12,18 @@ pipeline {
             }
         }
         stage('Build') {
-            steps {
-                script {
-                    dir('DevOps_Project') {
-                        sh 'mvn clean install'
-                    }
+                    steps {
+                            sh 'mvn clean package'
+                        }
+
                 }
-            }
-        }
         stage('Test') {
             steps {
-                script {
-                    dir('DevOps_Project') {
-                        // Exécute les tests avec Maven
+
+
                         sh 'mvn test'
-                    }
-                }
+
+
             }
         }
     }
