@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
 
-                git branch: 'rima',
+                git branch: 'Rima_BenHmida_5SAE3_TEKdev',
                     credentialsId: '853bbb17-ff9a-4e63-a294-d37d30f791a9',
                     url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
             }
