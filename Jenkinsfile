@@ -24,13 +24,15 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    // Assuming you have Docker installed and configured on your Jenkins agent
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '22e454af-c74f-4685-b178-4983efe9baed', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                        sh 'docker build -t myapp:1.0 .'
+                        // Utiliser le numéro de build comme tag pour l'image
+                        def imageTag = "myapp:${env.BUILD_NUMBER}"
+                        sh "docker build -t ${imageTag} ."
                     }
                 }
             }
         }
+
     }
 }
