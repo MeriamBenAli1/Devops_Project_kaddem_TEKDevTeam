@@ -3,7 +3,6 @@ package tn.esprit.spring.kaddem;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +37,11 @@ class EquipeServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        equipe = createEquipeWithEtudiants();
+    }
 
-        equipe = new Equipe();
+    private Equipe createEquipeWithEtudiants() {
+        Equipe equipe = new Equipe();
         equipe.setNiveau(Niveau.JUNIOR);
         equipe.setIdEquipe(1);
 
@@ -47,42 +49,33 @@ class EquipeServiceImplTest {
         for (int i = 0; i < 4; i++) {
             Etudiant etudiant = new Etudiant();
             etudiant.setIdEtudiant(i + 1);
-
-            Set<Contrat> contrats = new HashSet<>();
-
-
-            Contrat contratValide = new Contrat();
-            contratValide.setArchive(false);
-
-
-            Date dateSysteme = new Date();
-
-            contratValide.setDateDebutContrat(new Date(120, 0, 1));
-
-            contratValide.setDateFinContrat(new Date(122, 0, 1));
-
-
-
-            Date dateFin = new Date(dateSysteme.getTime() - (1000L * 60 * 60 * 24 * 365)); // 1 an dans le passé
-            contrats.add(contratValide);
-            etudiant.setContrats(contrats);
+            etudiant.setContrats(createContrats());
             etudiants.add(etudiant);
         }
 
         equipe.setEtudiants(etudiants);
+        return equipe;
     }
 
+    private Set<Contrat> createContrats() {
+        Set<Contrat> contrats = new HashSet<>();
+        Contrat contratValide = new Contrat();
+        contratValide.setArchive(false);
+        contratValide.setDateDebutContrat(new Date(120, 0, 1));
+        contratValide.setDateFinContrat(new Date(122, 0, 1));
+        contrats.add(contratValide);
+        return contrats;
+    }
 
     @Test
     @Order(1)
     public void testEquipeCreation() {
         when(equipeRepository.save(any(Equipe.class))).thenReturn(equipe);
-
         Equipe savedEquipe = equipeService.addEquipe(equipe);
 
         assertNotNull(savedEquipe, "L'équipe ne doit pas être null.");
         assertEquals(Niveau.JUNIOR, savedEquipe.getNiveau(), "L'équipe doit être initialement au niveau JUNIOR.");
-        assertEquals(4, savedEquipe.getEtudiants().size(), "L'équipe doit avoir exactement 3 étudiants.");
+        assertEquals(4, savedEquipe.getEtudiants().size(), "L'équipe doit avoir exactement 4 étudiants.");
     }
 
     @Test
@@ -93,30 +86,17 @@ class EquipeServiceImplTest {
 
         equipeService.evoluerEquipes();
 
-
-        Set<Etudiant> etudiants = equipe.getEtudiants();
-
-        assertNotNull(etudiants, "L'équipe doit avoir des étudiants.");
-        assertEquals(4, etudiants.size(), "L'équipe doit avoir exactement 3 étudiants après l'évolution.");
-
-
         assertEquals(Niveau.SENIOR, equipe.getNiveau(), "L'équipe doit passer au niveau SENIOR après évolution.");
-
-
+        assertEquals(4, equipe.getEtudiants().size(), "L'équipe doit avoir exactement 4 étudiants après l'évolution.");
     }
 
     @Test
     @Order(3)
     public void testContratsActifs() {
-        boolean hasActiveContract = false;
-        for (Etudiant etudiant : equipe.getEtudiants()) {
-            for (Contrat contrat : etudiant.getContrats()) {
-                if (!contrat.getArchive()) {
-                    hasActiveContract = true;
-                    break;
-                }
-            }
-        }
+        boolean hasActiveContract = equipe.getEtudiants().stream()
+                .flatMap(etudiant -> etudiant.getContrats().stream())
+                .anyMatch(contrat -> !contrat.getArchive());
+
         assertTrue(hasActiveContract, "Chaque étudiant doit avoir un contrat actif non archivé.");
     }
 }
