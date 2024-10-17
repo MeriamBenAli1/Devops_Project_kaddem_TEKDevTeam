@@ -1,35 +1,34 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'M2_HOME'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-
-                git branch: 'rima',
-                    credentialsId: '853bbb17-ff9a-4e63-a294-d37d30f791a9',
-                    url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
+                checkout scm
             }
         }
-
         stage('Build') {
             steps {
-                    sh 'mvn clean package'
+                script {
+                    dir('DevOps_Project') {
+                        sh 'mvn clean install'
+                    }
                 }
-
+            }
         }
-        stage('Run Tests') {
-                    steps {
+        stage('Test') {
+            steps {
+                script {
+                    dir('DevOps_Project') {
+                        // Exécute les tests avec Maven
                         sh 'mvn test'
                     }
-        }
-    }
-
-
-    post {
-        success {
-            echo 'Le build a réussi!'
-        }
-        failure {
-            echo 'Le build a échoué!'
+                }
+            }
         }
     }
 }
