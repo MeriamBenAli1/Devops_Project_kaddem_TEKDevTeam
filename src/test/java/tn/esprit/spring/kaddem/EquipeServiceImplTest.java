@@ -32,6 +32,8 @@ class EquipeServiceImplTest {
     @Mock
     private EquipeRepository equipeRepository;
 
+
+
     @InjectMocks
     private EquipeServiceImpl equipeService;
 
