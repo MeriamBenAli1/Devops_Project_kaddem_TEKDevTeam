@@ -17,6 +17,15 @@ pipeline {
 
         }
     }
+
+
+
+
+
+
+
+
+
     post {
         success {
             echo 'Le build a réussi!'
