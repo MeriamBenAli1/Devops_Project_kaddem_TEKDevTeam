@@ -16,18 +16,12 @@ pipeline {
                 }
 
         }
-
-
-stage('Run Tests') {
-            steps {
-                sh 'mvn test'
-            }
+        stage('Run Tests') {
+                    steps {
+                        sh 'mvn test'
+                    }
         }
-
-
-
-
-
+    }
 
 
     post {
