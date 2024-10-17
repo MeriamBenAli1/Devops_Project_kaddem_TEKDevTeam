@@ -45,7 +45,7 @@ public class EquipeServiceImpl implements IEquipeService{
 		List<Equipe> equipes = (List<Equipe>) equipeRepository.findAll();
 		for (Equipe equipe : equipes) {
 			if ((equipe.getNiveau().equals(Niveau.JUNIOR)) || (equipe.getNiveau().equals(Niveau.SENIOR))) {
-				List<Etudiant> etudiants = (List<Etudiant>) equipe.getEtudiants();
+				Set<Etudiant> etudiants = equipe.getEtudiants();
 				Integer nbEtudiantsAvecContratsActifs=0;
 				for (Etudiant etudiant : etudiants) {
 					Set<Contrat> contrats = etudiant.getContrats();
