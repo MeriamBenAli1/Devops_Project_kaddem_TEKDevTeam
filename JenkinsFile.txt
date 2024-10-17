@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "pulling .!";
+                git branch: 'AmineAkr', url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
+            }
+        }
+
+
+        stage('Testing Maven') {
+            steps {
+                echo 'Running tests...'
+                sh 'mvn -version'
+            }
+        }
+
+        stage('JUnit TEst') {
+             steps {
+                echo 'Running tests...'
+                sh 'mvn test'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
