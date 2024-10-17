@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import tn.esprit.spring.kaddem.controllers.dtos.ContratDTO;
 import tn.esprit.spring.kaddem.entities.Contrat;
 import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Specialite;
@@ -25,13 +26,28 @@ ContratRepository contratRepository;
 		return (List<Contrat>) contratRepository.findAll();
 	}
 
-	public Contrat updateContrat (Contrat  ce){
-		return contratRepository.save(ce);
+	public Contrat updateContrat(ContratDTO ce) {
+		// Convert ContratDTO to Contrat entity
+		Contrat contrat = new Contrat();
+		contrat.setDateDebutContrat(ce.getDateDebutContrat());
+		contrat.setDateFinContrat(ce.getDateFinContrat());
+		// Set other fields from DTO to Entity as needed
+
+		// Update entity using repository
+		return contratRepository.save(contrat);
 	}
 
-	public  Contrat addContrat (Contrat ce){
-		return contratRepository.save(ce);
+	public Contrat addContrat(ContratDTO ce) {
+		// Convert ContratDTO to Contrat entity
+		Contrat contrat = new Contrat();
+		contrat.setDateDebutContrat(ce.getDateDebutContrat());
+		contrat.setDateFinContrat(ce.getDateFinContrat());
+		// Set other fields from DTO to Entity as needed
+
+		// Save entity using repository
+		return contratRepository.save(contrat);
 	}
+
 
 	public Contrat retrieveContrat (Integer  idContrat){
 		return contratRepository.findById(idContrat).orElse(null);

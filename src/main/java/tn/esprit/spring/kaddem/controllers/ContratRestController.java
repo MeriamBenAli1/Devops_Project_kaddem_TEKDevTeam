@@ -1,12 +1,11 @@
 package tn.esprit.spring.kaddem.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.kaddem.controllers.dtos.ContratDTO;
 import tn.esprit.spring.kaddem.entities.Contrat;
-import tn.esprit.spring.kaddem.services.ContratServiceImpl;
 import tn.esprit.spring.kaddem.services.IContratService;
 
 import java.util.Date;
@@ -31,7 +30,7 @@ public class ContratRestController {
 
 	// http://localhost:8089/Kaddem/econtrat/add-contrat
 	@PostMapping("/add-contrat")
-	public Contrat addContrat(@RequestBody Contrat c) {
+	public Contrat addContrat(@RequestBody ContratDTO c) {
 		Contrat contrat = contratService.addContrat(c);
 		return contrat;
 	}
@@ -44,7 +43,7 @@ public class ContratRestController {
 
 	// http://localhost:8089/Kaddem/contrat/update-contrat
 	@PutMapping("/update-contrat")
-	public Contrat updateContrat(@RequestBody Contrat c) {
+	public Contrat updateContrat(@RequestBody ContratDTO c) {
 		Contrat contrat= contratService.updateContrat(c);
 		return contrat;
 	}
