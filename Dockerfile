@@ -1,4 +1,8 @@
-FROM ubuntu:latest
-LABEL authors="Dhaker"
+# Use an official OpenJDK 17 runtime as a parent image
+FROM openjdk:17-jdk-alpine
 
-ENTRYPOINT ["top", "-b"]
+EXPOSE 8089
+
+COPY target/*.jar kaddem.jar
+
+CMD ["java", "-jar", "kaddem.jar"]
