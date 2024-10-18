@@ -15,6 +15,8 @@ import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -68,4 +70,48 @@ return e;
 	public 	List<Etudiant> getEtudiantsByDepartement (Integer idDepartement){
 return  etudiantRepository.findEtudiantsByDepartement_IdDepart((idDepartement));
 	}
+
+	public List<Etudiant> getEtudiantsWithExpiringContracts() {
+		Date currentDate = new Date();
+		Date expirationDate = new Date(currentDate.getTime() + (30L * 24 * 60 * 60 * 1000)); // 30 jours à partir d'aujourd'hui
+
+		List<Etudiant> etudiantsExpirants = new ArrayList<>();
+		List<Etudiant> etudiants = (List<Etudiant>) etudiantRepository.findAll();
+
+		for (Etudiant etudiant : etudiants) {
+			boolean hasExpiringContract = false;
+			for (Contrat contrat : etudiant.getContrats()) {
+				if (!contrat.getArchive() && contrat.getDateFinContrat().before(expirationDate)) {
+					hasExpiringContract = true;
+					break;
+				}
+			}
+			if (hasExpiringContract) {
+				etudiantsExpirants.add(etudiant);
+			}
+		}
+		return etudiantsExpirants;
+	}
+
+	public double calculateAverageContractDurationForEquipe(Integer idEquipe) {
+		Equipe equipe = equipeRepository.findById(idEquipe).orElse(null);
+		if (equipe == null || equipe.getEtudiants() == null || equipe.getEtudiants().isEmpty()) {
+			return 0.0;
+		}
+
+		long totalDuration = 0;
+		int count = 0;
+
+		for (Etudiant etudiant : equipe.getEtudiants()) {
+			for (Contrat contrat : etudiant.getContrats()) {
+				long durationInDays = (new Date().getTime() - contrat.getDateDebutContrat().getTime()) / (1000 * 60 * 60 * 24);
+				totalDuration += durationInDays;
+				count++;
+			}
+		}
+
+		return count == 0 ? 0.0 : (double) totalDuration / count;
+	}
+
+
 }
