@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+
+                git branch: 'AmineAkr',
+             
+                    url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                    sh 'mvn clean package'
+                }
+
+        }
+stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'mvn test';
+            }
+        }
+    }
+}
