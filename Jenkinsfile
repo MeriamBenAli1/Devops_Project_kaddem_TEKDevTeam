@@ -21,11 +21,7 @@ SONARQUBE_SERVER = 'SonarQube'
                 sh 'mvn clean package'
             }
         }
-        stage('MVN SONARQUBE'){
-        steps{
 
-        }
-        }
         stage('Test') {
             steps {
                 sh 'mvn test'
