@@ -58,4 +58,18 @@ class EtudiantServiceImplTest {
         assertEquals("Amine", savedEtudiant.getNomE(), "Le nom de l'étudiant doit être 'Amine'.");
         assertEquals(Option.GAMIX, savedEtudiant.getOp(), "L'option de l'étudiant doit être GAMIX.");
     }
+    @Test
+    @Order(2)
+    public void testContratsEtudiant() {
+        when(etudiantRepository.findById(1)).thenReturn(Optional.of(etudiant));
+
+        Etudiant fetchedEtudiant = etudiantService.retrieveEtudiant(1);
+        Set<Contrat> contrats = fetchedEtudiant.getContrats();
+
+        assertNotNull(contrats, "L'étudiant doit avoir des contrats.");
+        assertEquals(1, contrats.size(), "L'étudiant doit avoir exactement 1 contrat.");
+
+        boolean hasActiveContract = contrats.stream().anyMatch(contrat -> !contrat.getArchive());
+        assertTrue(hasActiveContract, "L'étudiant doit avoir au moins un contrat actif non archivé.");
+    }
 }
