@@ -56,6 +56,7 @@ class EquipeServiceImplTest {
 
 
             Contrat contratValide = new Contrat();
+            //contratnonarchivé
             contratValide.setArchive(false);
 
 

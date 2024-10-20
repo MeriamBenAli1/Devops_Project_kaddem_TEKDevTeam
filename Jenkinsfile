@@ -4,23 +4,43 @@ pipeline {
     tools {
         maven 'M2_HOME'
     }
-
+environment {
+SONARQUBE_SERVER = 'SonarQube'
+}
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+    stage('Checkout') {
+                steps {
+
+                    git branch: 'rima',
+                        credentialsId: '853bbb17-ff9a-4e63-a294-d37d30f791a9',
+                        url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
+                }
             }
-        }
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
+        }
+        stage('MVN SONARQUBE'){
+        steps{
+
+        }
         }
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
+        stage('SonarQube Analysis') {
+                    steps {
+                        script {
+                            withSonarQubeEnv('SonarQube') {
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=rimaBackend'
+                                }
+
+                        }
+                    }
+                }
         stage('Docker Build') {
             steps {
                 script {
