@@ -38,6 +38,13 @@ class EtudiantServiceImplTest {
         etudiant.setNomE("Amine");
         etudiant.setPrenomE("Akrimi");
         etudiant.setOp(Option.GAMIX);
+        Set<Contrat> contrats = new HashSet<>();
+        Contrat contrat = new Contrat();
+        contrat.setArchive(false); // Un contrat actif
+        contrat.setDateDebutContrat(new Date(120, 0, 1));
+        contrat.setDateFinContrat(new Date(122, 0, 1));
+        contrats.add(contrat);
+        etudiant.setContrats(contrats);
     }
 
     @Test
