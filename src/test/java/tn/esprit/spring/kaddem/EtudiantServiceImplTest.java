@@ -1,18 +1,21 @@
 package tn.esprit.spring.kaddem;
 
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
-import tn.esprit.spring.kaddem.entities.Etudiant;
-import tn.esprit.spring.kaddem.entities.Option;
+import static org.mockito.Mockito.*;
+import tn.esprit.spring.kaddem.entities.*;
+import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 import tn.esprit.spring.kaddem.services.EtudiantServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 class EtudiantServiceImplTest {
@@ -38,16 +41,14 @@ class EtudiantServiceImplTest {
     }
 
     @Test
-    void testGetEtudiantById() {
-        // Simuler le comportement du mock pour renvoyer l'étudiant
-        when(etudiantRepository.findById(1)).thenReturn(Optional.of(etudiant));
+    @Order(1)
+    public void testEtudiantCreation() {
+        when(etudiantRepository.save(any(Etudiant.class))).thenReturn(etudiant);
 
-        // Appeler la méthode à tester
-        Optional<Etudiant> retrievedEtudiant = Optional.ofNullable(etudiantService.retrieveEtudiant(1));
+        Etudiant savedEtudiant = etudiantService.addEtudiant(etudiant);
 
-        // Vérifier que l'étudiant récupéré n'est pas vide et qu'il a les bonnes valeurs
-        assertTrue(retrievedEtudiant.isPresent());
-        assertEquals("Amine", retrievedEtudiant.get().getNomE());
-        assertEquals("Akrimi", retrievedEtudiant.get().getPrenomE());
+        assertNotNull(savedEtudiant, "L'étudiant ne doit pas être null.");
+        assertEquals("Amine", savedEtudiant.getNomE(), "Le nom de l'étudiant doit être 'Amine'.");
+        assertEquals(Option.GAMIX, savedEtudiant.getOp(), "L'option de l'étudiant doit être GAMIX.");
     }
 }
