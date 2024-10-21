@@ -13,9 +13,15 @@ public class Departement implements Serializable{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idDepart;
     private String nomDepart;
+
     @OneToMany(mappedBy="departement")
     @JsonIgnore
     private Set<Etudiant> etudiants;
+
+    @ManyToOne
+    @JoinColumn(name = "id_univ")
+    private Universite universite;
+
     public Departement() {
         // TODO Auto-generated constructor stub
     }
@@ -42,14 +48,24 @@ public class Departement implements Serializable{
     public Integer getIdDepart() {
         return idDepart;
     }
+
     public void setIdDepart(Integer idDepart) {
         this.idDepart = idDepart;
     }
+
     public String getNomDepart() {
         return nomDepart;
     }
+
     public void setNomDepart(String nomDepart) {
         this.nomDepart = nomDepart;
     }
 
+    public Universite getUniversite() {
+        return universite;
+    }
+
+    public void setUniversite(Universite universite) {
+        this.universite = universite;
+    }
 }

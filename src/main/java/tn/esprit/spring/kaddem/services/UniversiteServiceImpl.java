@@ -50,4 +50,5 @@ return  u;
 Universite u=universiteRepository.findById(idUniversite).orElse(null);
 return u.getDepartements();
     }
+
 }

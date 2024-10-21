@@ -4,12 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import tn.esprit.spring.kaddem.controllers.DepartementRestController;
 import tn.esprit.spring.kaddem.entities.Departement;
 import tn.esprit.spring.kaddem.entities.Equipe;
+import tn.esprit.spring.kaddem.entities.Universite;
 import tn.esprit.spring.kaddem.repositories.ContratRepository;
 import tn.esprit.spring.kaddem.repositories.DepartementRepository;
+import tn.esprit.spring.kaddem.repositories.UniversiteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 
@@ -17,6 +22,8 @@ import java.util.List;
 public class DepartementServiceImpl implements IDepartementService{
 	@Autowired
 	DepartementRepository departementRepository;
+	@Autowired
+	UniversiteRepository universiteRepository;
 	public List<Departement> retrieveAllDepartements(){
 		return (List<Departement>) departementRepository.findAll();
 	}
@@ -35,6 +42,15 @@ public class DepartementServiceImpl implements IDepartementService{
 	public  void deleteDepartement(Integer idDepartement){
 		Departement d=retrieveDepartement(idDepartement);
 		departementRepository.delete(d);
+	}
+
+	@Override
+	public List<Departement> retrieveDepartementsByUniversite(Integer idUniversite) {
+		Universite universite = universiteRepository.findById(idUniversite)
+				.orElseThrow(() -> new RuntimeException("Université non trouvée pour l'ID : " + idUniversite));
+
+
+		return new ArrayList<>(universite.getDepartements());
 	}
 
 

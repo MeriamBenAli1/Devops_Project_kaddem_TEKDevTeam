@@ -43,6 +43,12 @@ public class DepartementRestController {
 		Departement departement= departementService.updateDepartement(e);
 		return departement;
 	}
+
+	// Nouvelle méthode : http://localhost:8089/Kaddem/departement/retrieve-departements-by-universite/1
+	@GetMapping("/retrieve-departements-by-universite/{universite-id}")
+	public List<Departement> retrieveDepartementsByUniversite(@PathVariable("universite-id") Integer universiteId) {
+		return departementService.retrieveDepartementsByUniversite(universiteId);
+	}
 }
 
 

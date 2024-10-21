@@ -14,5 +14,5 @@ public interface IDepartementService {
     public  Departement retrieveDepartement (Integer idDepart);
 
     public  void deleteDepartement(Integer idDepartement);
-
+    List<Departement> retrieveDepartementsByUniversite(Integer idUniversite);
 }

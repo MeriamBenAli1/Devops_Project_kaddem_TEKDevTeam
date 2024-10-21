@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tn.esprit.spring.kaddem.controllers.DepartementRestController;
 import tn.esprit.spring.kaddem.entities.Departement;
 import tn.esprit.spring.kaddem.repositories.DepartementRepository;
 
@@ -92,5 +94,16 @@ class DepartementServiceImplTest {
 
         // Assert
         verify(departementRepository).delete(departement);
+    }
+
+    @Test
+    void testRetrieveDepartementsByUniversite() {
+        int idUniversite = 1;
+        List<Departement> expectedDepartements = new ArrayList<>();
+        IDepartementService departementService = Mockito.mock(IDepartementService.class);
+        when(departementService.retrieveDepartementsByUniversite(idUniversite)).thenReturn(expectedDepartements);
+        DepartementRestController departementController = new DepartementRestController(departementService);
+        List<Departement> actualDepartements = departementController.retrieveDepartementsByUniversite(idUniversite);
+        assertEquals(expectedDepartements, actualDepartements);
     }
 }
