@@ -3,24 +3,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-
-                git branch: 'AmineAkr',
-             
-                    url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
+                echo 'Pulling..!'
+                git branch: 'nouvelle_branche',
+                credentialsId: 'github-credentials',
+                url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
             }
         }
-
-        stage('Build') {
+         stage('Maven clean') {
             steps {
-                    sh 'mvn clean package'
-                }
-
+                echo 'Building the project...'
+                sh 'mvn clean package';
+            }
         }
-stage('Test') {
+        stage('MVN Test') {
             steps {
                 echo 'Running tests...'
                 sh 'mvn test';
             }
         }
+       stage('MVN SonarQube') {
+           steps {
+               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Amineakr.012a
+           }
+        }
     }
+
 }
