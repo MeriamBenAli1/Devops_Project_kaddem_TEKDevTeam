@@ -5,6 +5,7 @@ pipeline {
         maven 'M2_HOME'
     }
 environment {
+MAVEN_SETTINGS = '/usr/share/maven/conf/settings.xml'
 SONARQUBE_SERVER = 'SonarQube'
 }
     stages {
@@ -37,6 +38,17 @@ SONARQUBE_SERVER = 'SonarQube'
                         }
                     }
                 }
+
+                stage('Deploy to Nexus') {
+                            steps {
+
+                script {
+
+                                    sh "mvn deploy -DskipTests -s ${MAVEN_SETTINGS} -DaltDeploymentRepository=deploymentRepo::default::http://192.168.50.4:8081/repository/maven-releases/"
+                                }
+
+                            }
+                        }
         stage('Docker Build') {
             steps {
                 script {
