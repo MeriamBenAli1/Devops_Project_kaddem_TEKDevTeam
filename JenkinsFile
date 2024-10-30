@@ -26,6 +26,12 @@ pipeline {
                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Amineakr.012a'
            }
         }
+        stage('MVN Nexus') {
+                    steps {
+                        echo 'Deploying to Nexus...'
+                        sh 'mvn deploy -DskipTests'
+                    }
+                }
     }
 
 }
