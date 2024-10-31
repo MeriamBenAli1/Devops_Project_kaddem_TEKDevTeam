@@ -15,7 +15,7 @@
     <description>kaddem</description>
     <distributionManagement>
         <repository>
-            <id>deploymentRepoMeriam</id>
+            <id>deploymentRepo</id>
             <name>Nexus Repository</name>
             <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
