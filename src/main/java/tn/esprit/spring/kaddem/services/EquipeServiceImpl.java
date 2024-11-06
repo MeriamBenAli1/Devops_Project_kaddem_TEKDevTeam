@@ -42,8 +42,10 @@ public class EquipeServiceImpl implements IEquipeService{
 	}
 
 	public void evoluerEquipes(){
+		//Récupération des équipes
 		List<Equipe> equipes = (List<Equipe>) equipeRepository.findAll();
 		for (Equipe equipe : equipes) {
+			//Vérification du niveau de l'équipe
 			if ((equipe.getNiveau().equals(Niveau.JUNIOR)) || (equipe.getNiveau().equals(Niveau.SENIOR))) {
 				Set<Etudiant> etudiants = equipe.getEtudiants();
 				Integer nbEtudiantsAvecContratsActifs=0;
@@ -54,6 +56,8 @@ public class EquipeServiceImpl implements IEquipeService{
 						Date dateSysteme = new Date();
 						long difference_In_Time = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
 						long difference_In_Years = (difference_In_Time / (1000l * 60 * 60 * 24 * 365));
+						//Comptage des contrats actifs
+						//non archivé w >contrat 1an
 						if ((contrat.getArchive() == false) && (difference_In_Years > 1)) {
 							//	contratsActifs.add(contrat);
 							nbEtudiantsAvecContratsActifs++;
@@ -62,9 +66,11 @@ public class EquipeServiceImpl implements IEquipeService{
 						if (nbEtudiantsAvecContratsActifs >= 3) break;
 					}
 				}
+				//ken equipe composé de >3 et contrat>1 yetra9a
 					if (nbEtudiantsAvecContratsActifs >= 3){
 						if (equipe.getNiveau().equals(Niveau.JUNIOR)){
 							equipe.setNiveau(Niveau.SENIOR);
+							//save en database
 							equipeRepository.save(equipe);
 							break;
 						}

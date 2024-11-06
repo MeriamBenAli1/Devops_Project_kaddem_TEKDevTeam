@@ -42,8 +42,9 @@ class EquipeServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-
+       //ajout nouveau equipe avec niveau junior
         equipe = new Equipe();
+        //doit etre junior
         equipe.setNiveau(Niveau.JUNIOR);
         equipe.setIdEquipe(1);
 
@@ -54,7 +55,7 @@ class EquipeServiceImplTest {
 
             Set<Contrat> contrats = new HashSet<>();
 
-
+ //new contrat
             Contrat contratValide = new Contrat();
             //contratnonarchivé
             contratValide.setArchive(false);
@@ -67,7 +68,7 @@ class EquipeServiceImplTest {
             contratValide.setDateFinContrat(new Date(122, 0, 1));
 
 
-
+             //contrat >1an
             Date dateFin = new Date(dateSysteme.getTime() - (1000L * 60 * 60 * 24 * 365)); // 1 an dans le passé
             contrats.add(contratValide);
             etudiant.setContrats(contrats);
@@ -81,10 +82,11 @@ class EquipeServiceImplTest {
     @Test
     @Order(1)
     public void testEquipeCreation() {
+        //simuler sauvegarde dune equipe
         when(equipeRepository.save(any(Equipe.class))).thenReturn(equipe);
-
+        //appel service pour ajouter equipe
         Equipe savedEquipe = equipeService.addEquipe(equipe);
-
+        //tester kima nhebou ou pas
         assertNotNull(savedEquipe, "L'équipe ne doit pas être null.");
         assertEquals(Niveau.JUNIOR, savedEquipe.getNiveau(), "L'équipe doit être initialement au niveau JUNIOR.");
         assertEquals(4, savedEquipe.getEtudiants().size(), "L'équipe doit avoir exactement 3 étudiants.");
@@ -92,15 +94,17 @@ class EquipeServiceImplTest {
 
     @Test
     @Order(2)
+    //but c d'evolution equipe yetra9a ou pas
+    //save
     public void testEvoluerEquipes() {
         when(equipeRepository.save(any(Equipe.class))).thenReturn(equipe);
         when(equipeRepository.findAll()).thenReturn(Arrays.asList(equipe));
-
+    //appeler service evoluerequipe
         equipeService.evoluerEquipes();
 
 
         Set<Etudiant> etudiants = equipe.getEtudiants();
-
+//les test avec assert
         assertNotNull(etudiants, "L'équipe doit avoir des étudiants.");
         assertEquals(4, etudiants.size(), "L'équipe doit avoir exactement 3 étudiants après l'évolution.");
 
@@ -112,6 +116,7 @@ class EquipeServiceImplTest {
 
     @Test
     @Order(3)
+    //posssede contrat non archivé ou pas
     public void testContratsActifs() {
         boolean hasActiveContract = false;
         for (Etudiant etudiant : equipe.getEtudiants()) {

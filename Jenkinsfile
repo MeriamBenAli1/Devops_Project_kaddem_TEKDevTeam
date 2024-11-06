@@ -57,10 +57,21 @@ SONARQUBE_SERVER = 'SonarQube'
                         // Utiliser le numéro de build comme tag pour l'image
                         def imageTag = "myapp:${env.BUILD_NUMBER}"
                         sh "docker build -t ${imageTag} ."
+                        sh "docker push rimabenhmida/${imageTag} "
+
                     }
                 }
             }
         }
+
+
+        stage('Docker Compose') {
+                    steps {
+                        script {
+                            sh "socker compose up -d"
+                        }
+                    }
+                }
 
     }
 }
