@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import tn.esprit.spring.kaddem.entities.Contrat;
 import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Niveau;
@@ -12,7 +11,6 @@ import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -34,7 +32,7 @@ public class EquipeServiceImpl implements IEquipeService{
 	}
 
 	public Equipe retrieveEquipe(Integer equipeId){
-		return equipeRepository.findById(equipeId).get();
+		return equipeRepository.findById(equipeId).orElseThrow(() -> new RuntimeException("Equipe not found"));
 	}
 
 	public Equipe updateEquipe(Equipe e){
@@ -46,36 +44,25 @@ public class EquipeServiceImpl implements IEquipeService{
 		for (Equipe equipe : equipes) {
 			if ((equipe.getNiveau().equals(Niveau.JUNIOR)) || (equipe.getNiveau().equals(Niveau.SENIOR))) {
 				List<Etudiant> etudiants = (List<Etudiant>) equipe.getEtudiants();
-				Integer nbEtudiantsAvecContratsActifs=0;
-				for (Etudiant etudiant : etudiants) {
-					Set<Contrat> contrats = etudiant.getContrats();
-					//Set<Contrat> contratsActifs=null;
-					for (Contrat contrat : contrats) {
-						Date dateSysteme = new Date();
-						long difference_In_Time = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
-						long difference_In_Years = (difference_In_Time / (1000l * 60 * 60 * 24 * 365));
-						if ((contrat.getArchive() == false) && (difference_In_Years > 1)) {
-							//	contratsActifs.add(contrat);
-							nbEtudiantsAvecContratsActifs++;
-							break;
-						}
-						if (nbEtudiantsAvecContratsActifs >= 3) break;
+				long nbEtudiantsAvecContratsActifs = etudiants.stream()
+						.flatMap(etudiant -> etudiant.getContrats().stream())
+						.filter(contrat -> {
+							Date dateSysteme = new Date();
+							long differenceInTime = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
+							long differenceInYears = (differenceInTime / (1000L * 60 * 60 * 24 * 365));
+							return Boolean.TRUE.equals(!contrat.getArchive()) && (differenceInYears > 1);
+						})
+						.count();
+
+				if (nbEtudiantsAvecContratsActifs >= 3) {
+					if (equipe.getNiveau().equals(Niveau.JUNIOR)) {
+						equipe.setNiveau(Niveau.SENIOR);
+					} else if (equipe.getNiveau().equals(Niveau.SENIOR)) {
+						equipe.setNiveau(Niveau.EXPERT);
 					}
-				}
-					if (nbEtudiantsAvecContratsActifs >= 3){
-						if (equipe.getNiveau().equals(Niveau.JUNIOR)){
-							equipe.setNiveau(Niveau.SENIOR);
-							equipeRepository.save(equipe);
-							break;
-						}
-						if (equipe.getNiveau().equals(Niveau.SENIOR)){
-							equipe.setNiveau(Niveau.EXPERT);
-							equipeRepository.save(equipe);
-							break;
-						}
+					equipeRepository.save(equipe);
 				}
 			}
-
 		}
 
 	}
