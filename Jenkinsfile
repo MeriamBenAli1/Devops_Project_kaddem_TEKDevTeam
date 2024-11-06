@@ -68,7 +68,7 @@ SONARQUBE_SERVER = 'SonarQube'
         stage('Docker Compose') {
                     steps {
                         script {
-                            sh "socker compose up -d"
+                            sh "docker compose up -d"
                         }
                     }
                 }
