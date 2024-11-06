@@ -15,6 +15,8 @@ services:
 
   spring_app:
     image: rimabenhmida/myapp:65  # Le nom de votre image
+    ports:
+      - "8085:8085"
     container_name: spring_app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/db  # URL de connexion à la base de données
