@@ -14,7 +14,7 @@ services:
     restart: always
 
   spring_app:
-    image: myapp:54  # Le nom de votre image
+    image: rimabenhmida/myapp:65  # Le nom de votre image
     container_name: spring_app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/db  # URL de connexion à la base de données

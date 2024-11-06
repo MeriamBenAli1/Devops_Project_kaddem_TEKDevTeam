@@ -56,7 +56,7 @@ SONARQUBE_SERVER = 'SonarQube'
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                         // Utiliser le numéro de build comme tag pour l'image
                         def imageTag = "myapp:${env.BUILD_NUMBER}"
-                        sh "docker build -t ${imageTag} ."
+                        sh "docker build -t rimabenhmida/${imageTag} ."
                         sh "docker push rimabenhmida/${imageTag} "
 
                     }
