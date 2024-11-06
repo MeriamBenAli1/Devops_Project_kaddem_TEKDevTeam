@@ -15,8 +15,7 @@ public class DepartementRestController {
 	// http://localhost:8089/Kaddem/departement/retrieve-all-departements
 	@GetMapping("/retrieve-all-departements")
 	public List<Departement> getDepartements() {
-		List<Departement> listDepartements = departementService.retrieveAllDepartements();
-		return listDepartements;
+		return departementService.retrieveAllDepartements();
 	}
 	// http://localhost:8089/Kaddem/departement/retrieve-departement/8
 	@GetMapping("/retrieve-departement/{departement-id}")
