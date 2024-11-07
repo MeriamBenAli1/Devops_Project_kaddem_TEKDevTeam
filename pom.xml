@@ -12,6 +12,7 @@
     <artifactId>kaddem</artifactId>
     <version>1.0</version>
     <!-- <version>0.0.1-SNAPSHOT</version> -->
+         <!-- <version>Test webhooks</version> -->
        <name>kaddem</name>
        <description>kaddem</description>
        <properties>
