@@ -15,7 +15,7 @@ services:
   station-ski:
     depends_on:
       - mysqldb
-    image: amineakr/kaddem:1.0.0
+    image: amineakr/kaddem:1.0
     restart: on-failure
     ports:
       - "8089:8089"
