@@ -31,6 +31,11 @@
 
     <properties>
         <java.version>1.8</java.version>
+
+        <sonar.projectKey>your_project_key</sonar.projectKey>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>sqp_4fb111aa34faa486213fff22623a1b8457e0a5d5</sonar.login>
+        <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
     </properties>
 
     <dependencies>
@@ -80,6 +85,20 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.0.2155</version>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
