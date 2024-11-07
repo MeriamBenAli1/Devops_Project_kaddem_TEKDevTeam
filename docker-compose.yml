@@ -14,7 +14,7 @@ services:
     restart: always
 
   spring_app:
-    image: rimabenhmida/myapp:72  # Le nom de votre image
+    image: rimabenhmida/myapp:71  # Le nom de votre image
     ports:
       - "8085:8085"
     container_name: spring_app
