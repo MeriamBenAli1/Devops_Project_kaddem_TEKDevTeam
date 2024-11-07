@@ -20,10 +20,13 @@
 
     <!-- Deploy to Nexus -->
     <distributionManagement>
+        <snapshotRepository>
+            <id>snapshotRepo</id>
+            <url>http://192.168.50.4:8081/repository/Kaddem-snapshots/</url>
+        </snapshotRepository>
         <repository>
-            <id>deploymentRepo</id>
-            <name>Nexus Repository</name>
-            <url>http://192.168.50.4:8081//repository/Kaddem-releases/</url>
+            <id>releaseRepo</id>
+            <url>http://192.168.50.4:8081/repository/Kaddem-releases/</url>
         </repository>
     </distributionManagement>
 
