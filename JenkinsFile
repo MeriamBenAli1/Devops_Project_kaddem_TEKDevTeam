@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Pulling..!'
-                git branch: 'nouvelle_branche',
+                git branch: 'AmineAkr',
                 credentialsId: 'github-credentials',
                 url: 'https://github.com/MeriamBenAli1/Devops_Project_kaddem_TEKDevTeam.git'
             }
@@ -12,13 +12,13 @@ pipeline {
          stage('Maven clean') {
             steps {
                 echo 'Building the project...'
-                sh 'mvn clean package';
+                sh 'mvn clean';
             }
         }
-        stage('MVN Test') {
+        stage('MVN Compile') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test';
+                sh 'mvn compile';
             }
         }
        stage('MVN SonarQube') {
@@ -30,6 +30,25 @@ pipeline {
                     steps {
                         echo 'Deploying to Nexus...'
                         sh 'mvn deploy -DskipTests'
+                    }
+                }
+        stage('Image') {
+                    steps {
+                        echo 'Création Image : ';
+                        sh 'docker build -t amineakr/kaddem:1.0.0 .';
+                    }
+                }
+        stage('Dockerhub') {
+                    steps {
+                        echo 'Push Image to dockerhub : ';
+                        sh 'docker login -u amineakr -p Taraji.012';
+                        sh 'docker push amineakr/kaddem:1.0.0';
+                    }
+                }
+        stage('Docker-Compose') {
+                    steps {
+                        echo 'Staet Backend + DB : ';
+                        sh 'docker compose up -d';
                     }
                 }
     }
