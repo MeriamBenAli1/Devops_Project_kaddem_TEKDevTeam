@@ -1,6 +1,13 @@
-scrape_configs:
+global:
+  scrape_interval: 15s
 
-  - job_name: 'Spring'
+scrape_configs:
+  - job_name: 'Spring Application'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['192.168.50.4:8085']
+      - targets: ['spring_app:8085']  # Cible pour l'application Spring
+
+  - job_name: 'Jenkins'
+    metrics_path: '/prometheus'  # Chemin pour Jenkins
+    static_configs:
+      - targets: ['192.168.50.4:8080']  # Cible pour Jenkins
