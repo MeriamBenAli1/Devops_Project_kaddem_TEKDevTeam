@@ -49,20 +49,20 @@ SONARQUBE_SERVER = 'SonarQube'
 
                             }
                         }
-        stage('Docker Build') {
-            steps {
-                script {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '22e454af-c74f-4685-b178-4983efe9baed', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                        // Utiliser le numéro de build comme tag pour l'image
-                        def imageTag = "myapp:${env.BUILD_NUMBER}"
-                        sh "docker build -t rimabenhmida/${imageTag} ."
-                        sh "docker push rimabenhmida/${imageTag} "
-
-                    }
-                }
-            }
-        }
+//         stage('Docker Build') {
+//             steps {
+//                 script {
+//                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '22e454af-c74f-4685-b178-4983efe9baed', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
+//                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+//                         // Utiliser le numéro de build comme tag pour l'image
+//                         def imageTag = "myapp:${env.BUILD_NUMBER}"
+//                         sh "docker build -t rimabenhmida/${imageTag} ."
+//                         sh "docker push rimabenhmida/${imageTag} "
+//
+//                     }
+//                 }
+//             }
+//         }
 
 
         stage('Docker Compose') {
