@@ -14,7 +14,7 @@ services:
     restart: always
 
   spring_app:
-    image: rimabenhmida/myapp:71  # Le nom de votre image
+    image: rimabenhmida/myapp:latest  # Le nom de votre image
     ports:
       - "8085:8085"
     container_name: spring_app
@@ -22,7 +22,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/db  # URL de connexion à la base de données
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      "management.endpoints.web.exposure.include" : "*"
+      management.endpoints.web.exposure.include : "*"
     depends_on:
       - mysql_db
     restart: always
