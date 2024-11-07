@@ -52,20 +52,7 @@
             <version>1.6.9</version>
         </dependency>
     </dependencies>
-     <!-- Deploy to Nexus -->
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>deploymentRepo</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>http://192.168.50.4:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>deploymentRepo</id>
-            <name>Nexus Release Repository</name>
-            <url>http://192.168.50.4:8081/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <plugins>
@@ -82,30 +69,23 @@
                 </configuration>
             </plugin>
             <plugin>
-                  <groupId>org.sonarsource.scanner.maven</groupId>
+                <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.1.2184</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <version>3.8.0.2131</version>
             </plugin>
         </plugins>
     </build>
+    <!-- Deploy to Nexus -->
+
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>deploymentRepo</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
