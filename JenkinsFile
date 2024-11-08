@@ -26,6 +26,12 @@ pipeline {
                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Amineakr.012a'
            }
         }
+        stage('JUNIT/MOKITO') {
+                    steps {
+                        echo 'Running tests...'
+                        sh 'mvn test';
+                    }
+                }
         stage('MVN Nexus') {
                     steps {
                         echo 'Deploying to Nexus...'
@@ -35,7 +41,7 @@ pipeline {
         stage('Image') {
                     steps {
                         echo 'Création Image : ';
-                        sh 'docker build -t amineakr/kaddem:1.0.0 .';
+                        sh 'docker build -t amineakr/kaddem:1.0 .';
                     }
                 }
         stage('Dockerhub') {
@@ -47,7 +53,7 @@ pipeline {
                 }
         stage('Docker-Compose') {
                     steps {
-                        echo 'Staet Backend + DB : ';
+                        echo 'Starting Docker Compose : ';
                         sh 'docker compose up -d';
                     }
                 }
