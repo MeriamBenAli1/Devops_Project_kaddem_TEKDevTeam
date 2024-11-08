@@ -1,4 +1,5 @@
 package tn.esprit.spring.kaddem.services;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,14 @@ import java.util.List;
 @Service
 @Slf4j
 public class EtudiantServiceImpl implements IEtudiantService{
-	EtudiantRepository etudiantRepository ;
-	ContratRepository contratRepository;
-	EquipeRepository equipeRepository;
-    DepartementRepository departementRepository;
+	@Autowired
+	private EtudiantRepository etudiantRepository ;
+	@Autowired
+	private ContratRepository contratRepository;
+	@Autowired
+	private EquipeRepository equipeRepository;
+	@Autowired
+	private DepartementRepository departementRepository;
 	public List<Etudiant> retrieveAllEtudiants(){
 	return (List<Etudiant>) etudiantRepository.findAll();
 	}
