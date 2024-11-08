@@ -48,7 +48,7 @@ pipeline {
                     steps {
                         echo 'Push Image to dockerhub : ';
                         sh 'docker login -u amineakr -p Taraji.012';
-                        sh 'docker push amineakr/kaddem:1.0.0';
+                        sh 'docker push amineakr/kaddem:1.0';
                     }
                 }
         stage('Docker-Compose') {
