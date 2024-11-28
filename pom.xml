@@ -10,11 +10,16 @@
     </parent>
     <groupId>tn.esprit.spring</groupId>
     <artifactId>kaddem</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>kaddem</name>
     <description>kaddem</description>
     <properties>
         <java.version>1.8</java.version>
+        <sonar.exclusions>**/schemas/**,**/config/**</sonar.exclusions>
+        <sonar.coverage.exclusions>**/schemas/**,**/config/**</sonar.coverage.exclusions>
+        <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+        <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencies>
         <dependency>
@@ -46,8 +51,25 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.9</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>4.0.0.4121</version>
+        </dependency>
     </dependencies>
+         <!-- Deploy to Nexus --> 
+         <distributionManagement> 
+                  <repository> 
+                           <id>deploymentRepo</id> 
+                           <url>http://192.168.50.4:8081/repository/maven-releases/</url> 
+                  </repository> 
+         </distributionManagement>
 
     <build>
         <plugins>
@@ -62,6 +84,37 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>target/jacoco.exec</dataFile>
+                            <outputDirectory>target/coverage-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+
             </plugin>
         </plugins>
     </build>
